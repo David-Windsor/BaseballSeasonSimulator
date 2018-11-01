@@ -1,12 +1,9 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+package database;
 
+import models.Team;
+
+import java.sql.*;
+import java.util.HashMap;
 
 
 /**
@@ -18,7 +15,8 @@ public class Database {
 	Connection c = null;
 	Statement stmt = null;
 	HashMap<String,Team> teams;
-	Database(){
+
+	public Database() {
 		teams = new HashMap<String, Team>();
 		try {
 			Class.forName("org.sqlite.JDBC");
@@ -32,7 +30,7 @@ public class Database {
 	public void buildDatabase() {
 		try {
 			stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Team");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM models.Team");
 			
 			while(rs.next()) {
 				String id = rs.getString("team_id");

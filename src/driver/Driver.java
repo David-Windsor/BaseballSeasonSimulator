@@ -1,8 +1,12 @@
+package driver;
+
+import database.Database;
+import models.Game;
 
 public class Driver {
 
 	public static void main(String[] args) {
-		// Build Database and Populate Players based off of past three seasons
+		// Build database.Database and Populate Players based off of past three seasons
 		// Build teams based on the players stats and their most recent teams if played
 		// in 2017-2018 season
 		Database db = new Database();
@@ -12,7 +16,7 @@ public class Driver {
 
 			int pit = 0, phi = 0;
 			for (int i = 0; i < 100000; i++) {
-				if (g1.getResult().winner.teamId.equals("PIT")) {
+				if (g1.getResult().winner.getTeamId().equals("PIT")) {
 					pit++;
 				} else {
 					phi++;
@@ -25,8 +29,8 @@ public class Driver {
 
 	/**
 	 * Generates the result of a game based on the contents of the game
-	 * 
-	 * @param Game
+	 * change
+	 * @param models.Game
 	 *
 	 * @return A game Result that contains the winner This obviously needs some help
 	 *         because we can't compare teams yet.

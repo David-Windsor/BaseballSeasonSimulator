@@ -1,3 +1,5 @@
+package models;
+
 import java.util.Random;
 
 /**
@@ -7,14 +9,15 @@ import java.util.Random;
  */
 
 public class Game {
-	
+
 	Team home;
 	Team away;
+
 	public Game(Team H, Team A) {
 		home = H;
 		away = A;
 	}
-	
+
 	public GameResult getResult() {
 		Random r = new Random();
 		double n = r.nextDouble()*(home.getTeamValue()+away.getTeamValue());
@@ -25,5 +28,5 @@ public class Game {
 		}
 		return null;
 	}
-	
+
 }

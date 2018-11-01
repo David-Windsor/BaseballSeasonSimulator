@@ -1,4 +1,4 @@
-
+package models;
 
 /**
  * A simple class that holds the results of a game
@@ -16,7 +16,7 @@ public class GameResult {
 	}
 	@Override
 	public String toString() {
-		return winner.teamName;
+		return winner.getTeamName();
 	}
 
 }
