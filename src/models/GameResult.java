@@ -7,14 +7,16 @@ package models;
  */
 public class GameResult {
 	public Team winner;
-	public GameResult(Team w) {
+
+    private GameResult(Team w) {
 		winner = w;
 	}
 	
 	public Team getWinner() {
 		return winner;
 	}
-	@Override
+
+    @Override
 	public String toString() {
 		return winner.getTeamName();
 	}
