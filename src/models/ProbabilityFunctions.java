@@ -8,6 +8,8 @@ package models;
 public class ProbabilityFunctions {
     private void doNothing() {
     }
-	
+
+    private void doNothing2() {
+    }
 	
 }
