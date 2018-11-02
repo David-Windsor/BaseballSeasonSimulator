@@ -8,7 +8,7 @@ package models;
 public class GameResult {
 	public Team winner;
 
-    private GameResult(Team w) {
+    public  GameResult(Team w) {
 		winner = w;
 	}
 	

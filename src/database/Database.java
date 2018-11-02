@@ -12,15 +12,15 @@ import java.util.HashMap;
  *
  */
 public class Database {
-	Connection c = null;
-	Statement stmt = null;
-	HashMap<String,Team> teams;
+	private Connection c = null;
+	private Statement stmt = null;
+	private HashMap<String,Team> teams;
 
 	public Database() {
-		teams = new HashMap<String, Team>();
+		teams = new HashMap<>();
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:/BaseballDatabase.db");
+			c = DriverManager.getConnection("jdbc:sqlite:./external_resources/BaseballDatabase.db");
 			System.out.println("Connected");
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
@@ -30,7 +30,7 @@ public class Database {
 	public void buildDatabase() {
 		try {
 			stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM models.Team");
+			ResultSet rs = stmt.executeQuery("SELECT * FROM Team");
 			
 			while(rs.next()) {
 				String id = rs.getString("team_id");

@@ -9,6 +9,8 @@ public class Driver {
 		// Build database.Database and Populate Players based off of past three seasons
 		// Build teams based on the players stats and their most recent teams if played
 		// in 2017-2018 season
+
+		//TODO MAKE PACKAGE PRIVATE AFTER HANDLERS ARE MADE
 		Database db = new Database();
 		db.buildDatabase();
 		Game g1 = new Game(db.getTeam("PIT"), db.getTeam("PHI"));
@@ -26,14 +28,5 @@ public class Driver {
 		}
 
 	}
-
-	/**
-	 * Generates the result of a game based on the contents of the game
-	 * change
-	 * @param models.Game
-	 *
-	 * @return A game Result that contains the winner This obviously needs some help
-	 *         because we can't compare teams yet.
-	 */
 
 }
