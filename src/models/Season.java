@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Random;
 
 public class Season {
-    HashMap<Team, Integer> wins;
-    Database db;
+    private HashMap<Team, Integer> wins;
+    private Database db;
 
     public Season(Database d) {
         db = d;
