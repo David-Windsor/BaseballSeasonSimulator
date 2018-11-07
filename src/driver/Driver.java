@@ -1,40 +1,36 @@
 package driver;
-
 import database.Database;
-import models.Game;
-import org.omg.CORBA.PRIVATE_MEMBER;
+import models.Season;
+
+import java.util.HashMap;
 
 public class Driver {
 
 	public static void main(String[] args) {
-		// Build database.Database and Populate Players based off of past three seasons
-		// Build teams based on the players stats and their most recent teams if played
-		// in 2017-2018 season
-		Database db = new Database();
-		db.buildDatabase();
-		Game g1 = new Game(db.getTeam("PIT"), db.getTeam("PHI"));
-		for (int j = 0; j < 100; j++) {
+        // Build Database and Populate Players based off of past three seasons
+        // Build teams based on the players stats and their most recent teams if played
+        // in 2017-2018 season
+        Database db = new Database();
+        db.buildDatabase();
+        HashMap<String, Integer> totalWins = new HashMap<>();
+        for (String teamid : db.getTeamIDs()) {
+            totalWins.put(teamid, 0);
+        }
+        for (int i = 0; i < 1000; i++) {
+            Season s = new Season(db);
+            for (String teamid : db.getTeamIDs()) {
+                //System.out.println(teamid + ": " + s.getWins().get(db.getTeam(teamid)));
+                int temp = totalWins.get(teamid);
+                temp += s.getWins().get(db.getTeam(teamid));
+                totalWins.remove(teamid);
+                totalWins.put(teamid, temp);
+            }
+            System.out.println(i);
+        }
 
-			int pit = 0, phi = 0;
-			for (int i = 0; i < 100000; i++) {
-				if (g1.getResult().winner.getTeamId().equals("PIT")) {
-					pit++;
-				} else {
-					phi++;
-				}
-			}
-			System.out.println(pit + "|" + phi);
-		}
+        for (String teamid : db.getTeamIDs()) {
+            System.out.println(teamid + ": " + totalWins.get(teamid) / 1000.0);
+        }
 
-	}
-
-	/**
-	 * Generates the result of a game based on the contents of the game
-	 * change
-	 * @param models.Game
-	 *
-	 * @return A game Result that contains the winner This obviously needs some help
-	 *         because we can't compare teams yet.
-	 */
-
+    }
 }

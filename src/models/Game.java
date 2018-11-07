@@ -10,8 +10,8 @@ import java.util.Random;
 
 public class Game {
 
-	Team home;
-	Team away;
+    private Team home;
+    private Team away;
 
 	public Game(Team H, Team A) {
 		home = H;
