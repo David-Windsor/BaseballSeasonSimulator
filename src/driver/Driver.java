@@ -7,6 +7,7 @@ import java.util.HashMap;
 public class Driver {
 
 	public static void main(String[] args) {
+
         // Build Database and Populate Players based off of past three seasons
         // Build teams based on the players stats and their most recent teams if played
         // in 2017-2018 season
@@ -33,4 +34,5 @@ public class Driver {
         }
 
     }
+
 }

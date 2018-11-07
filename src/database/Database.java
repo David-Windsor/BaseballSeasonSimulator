@@ -18,6 +18,7 @@ import java.util.Map;
  *
  */
 public class Database {
+
     private Connection c = null;
     private Statement stmt = null;
     private HashMap<String, Team> teams;
@@ -31,6 +32,7 @@ public class Database {
 		try {
 			Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:./external_resources/BaseballDatabase.db");
+
 			System.out.println("Connected");
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
@@ -40,7 +42,9 @@ public class Database {
 	public void buildDatabase() {
 		try {
 			stmt = c.createStatement();
+
             ResultSet rs = stmt.executeQuery("SELECT * FROM Team");
+
 			
 			while(rs.next()) {
 				String id = rs.getString("team_id");
