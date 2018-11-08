@@ -49,7 +49,7 @@ public class WinHistogram extends ApplicationFrame {
             data[i] = tempData[i];
         }
         dataset.setType(HistogramType.RELATIVE_FREQUENCY);
-        dataset.addSeries("Wins", data, 10);
+        dataset.addSeries("Wins", data, 7);
     }
 
     public Season getSeason() {

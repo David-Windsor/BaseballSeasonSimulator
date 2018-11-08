@@ -17,6 +17,7 @@ public class Driver {
         HashMap<String, Integer> totalWins = new HashMap<>();
         for (String teamid : db.getTeamIDs()) {
             totalWins.put(teamid, 0);
+
         }
         for (int i = 0; i < 1; i++) {
             Season s = new Season(db);
