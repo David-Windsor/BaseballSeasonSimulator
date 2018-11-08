@@ -1,7 +1,5 @@
 package models;
 
-import models.Player;
-
 import java.util.ArrayList;
 
 /**
@@ -85,5 +83,10 @@ public class Team {
     @Override
     public String toString() {
         return teamId;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj.getClass() == Team.class && ((Team) obj).getTeamId().equals(teamId);
     }
 }

@@ -18,7 +18,7 @@ public class Game {
 		away = A;
 	}
 
-	public GameResult getResult() {
+	public GameResult play() {
 		Random r = new Random();
 		double n = r.nextDouble()*(home.getTeamValue()+away.getTeamValue());
 		if(n < home.getTeamValue()) {
@@ -29,4 +29,20 @@ public class Game {
 		return null;
 	}
 
+	public Team getHome() {
+		return home;
+	}
+
+	public Team getAway() {
+		return away;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj.getClass() == Game.class && ((Game) obj).getHome().equals(home) && ((Game) obj).getAway().equals(away);
+	}
+
+	public boolean sameTeams(Game g) {
+		return (home.equals(g.away) || home.equals(g.home)) && (away.equals(g.away) || away.equals(g.home));
+	}
 }

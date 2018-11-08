@@ -1,10 +1,11 @@
 package database;
 
+import com.sun.istack.internal.NotNull;
 import models.Team;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 
 /**
@@ -14,76 +15,43 @@ import java.util.HashMap;
  */
 public class Database {
 
-    private Connection c = null;
-    private Statement stmt = null;
-    private HashMap<String, Team> teams;
-    private ArrayList<String> teamIDs;
-
-
-    public Database() {
-        teams = new HashMap<>();
-        teamIDs = new ArrayList<>();
-		
-		try {
-			Class.forName("org.sqlite.JDBC");
-            c = DriverManager.getConnection("jdbc:sqlite:./external_resources/BaseballDatabase.db");
-
-			System.out.println("Connected");
-		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());
-		}
-	}
-	
-	public void buildDatabase() {
-		try {
-			stmt = c.createStatement();
-
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Team");
-
-			
-			while(rs.next()) {
-				String id = rs.getString("team_id");
-				String name = rs.getString("name");
-                String league = rs.getString("league_id");
-                String division = rs.getString("division_id");
-                teams.put(id, new Team(id, name, league, division));
-                teamIDs.add(id);
-				
-			}
-			rs = stmt.executeQuery("SELECT team_id, hits, at_bat FROM TeamBattingYear WHERE year = 2017");
-			while(rs.next()) {
-				teams.get(rs.getString("team_id")).setTeamValue(rs.getDouble("hits")/rs.getDouble("at_bat"));
-			}
-			
-			
-			
-			
-		} catch (SQLException e) {
-			System.out.println("Error: " + e.getMessage());
-		}
-		
-	}
-
-    public ArrayList<Team> getTeams(String q) {
+    @NotNull
+    private static Connection getNewConnection() {
         try {
-            stmt = c.createStatement();
-            ResultSet rs = stmt.executeQuery(q);
-            ArrayList<Team> t = new ArrayList<>();
-            while (rs.next()) {
-                t.add(teams.get(rs.getString("team_id")));
-            }
-            return t;
-        } catch (SQLException e) {
-            System.out.println("Error: " + e.getMessage());
+            Class.forName("org.sqlite.JDBC");
+            return DriverManager.getConnection("jdbc:sqlite:./external_resources/BaseballDatabase.db");
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return getNewConnection();
         }
-        return null;
     }
-	
-	public Team getTeam(String teamID) {
-		return teams.get(teamID);
-	}
 
-    public ArrayList<String> getTeamIDs() {
-        return teamIDs;
+    /**
+     * @param year year to get from the database. Year >= 2016
+     * @return a List of models.Team that played in that year
+     * Opens a new connection and produces a list of all teams that played that year
+     */
+    @NotNull
+    static List<Team> getTeamsForYear(@NotNull Integer year) {
+        ArrayList<Team> teams = new ArrayList<>();
+        if (year >= 2015) {
+            try {
+                String select = "SELECT * FROM TEAM WHERE YEAR = ?";
+                Connection c = getNewConnection();
+                //make the prepared statement and execute
+                PreparedStatement statement = c.prepareStatement(select);
+                statement.setInt(1, year);
+                ResultSet result = statement.executeQuery();
+                while (result.next()) {
+                    Team team = new Team(result.getString("team_id"), result.getString("name"),
+                            result.getString("league"), result.getString("division"));
+                    teams.add(team);
+                }
+            } catch (NullPointerException | SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return teams;
     }
+
 }
