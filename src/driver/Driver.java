@@ -1,5 +1,6 @@
 package driver;
 import database.Database;
+import graphics.WinHistogram;
 import models.Season;
 
 import java.util.HashMap;
@@ -27,6 +28,9 @@ public class Driver {
                 totalWins.put(teamid, temp);
             }
             System.out.println(i);
+            WinHistogram winHistogram = new WinHistogram("Wins", s);
+            winHistogram.pack();
+            winHistogram.setVisible(true);
         }
 
         for (String teamid : db.getTeamIDs()) {
