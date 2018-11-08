@@ -6,9 +6,11 @@ package models;
  *
  */
 public class GameResult {
-	public Team winner;
+    Team winner;
 
-    public  GameResult(Team w) {
+
+    GameResult(Team w) {
+
 		winner = w;
 	}
 	

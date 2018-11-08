@@ -3,6 +3,7 @@ package database;
 import models.Team;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -12,15 +13,21 @@ import java.util.HashMap;
  *
  */
 public class Database {
-	private Connection c = null;
-	private Statement stmt = null;
-	private HashMap<String,Team> teams;
 
-	public Database() {
-		teams = new HashMap<>();
+    private Connection c = null;
+    private Statement stmt = null;
+    private HashMap<String, Team> teams;
+    private ArrayList<String> teamIDs;
+
+
+    public Database() {
+        teams = new HashMap<>();
+        teamIDs = new ArrayList<>();
+		
 		try {
 			Class.forName("org.sqlite.JDBC");
-			c = DriverManager.getConnection("jdbc:sqlite:./external_resources/BaseballDatabase.db");
+            c = DriverManager.getConnection("jdbc:sqlite:./external_resources/BaseballDatabase.db");
+
 			System.out.println("Connected");
 		} catch (Exception e) {
 			System.out.println("Error: " + e.getMessage());
@@ -30,12 +37,18 @@ public class Database {
 	public void buildDatabase() {
 		try {
 			stmt = c.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM Team");
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM Team");
+
 			
 			while(rs.next()) {
 				String id = rs.getString("team_id");
 				String name = rs.getString("name");
-				teams.put(id, new Team(id,name));
+                String league = rs.getString("league_id");
+                String division = rs.getString("division_id");
+                teams.put(id, new Team(id, name, league, division));
+                teamIDs.add(id);
+				
 			}
 			rs = stmt.executeQuery("SELECT team_id, hits, at_bat FROM TeamBattingYear WHERE year = 2017");
 			while(rs.next()) {
@@ -51,8 +64,26 @@ public class Database {
 		
 	}
 
+    public ArrayList<Team> getTeams(String q) {
+        try {
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery(q);
+            ArrayList<Team> t = new ArrayList<>();
+            while (rs.next()) {
+                t.add(teams.get(rs.getString("team_id")));
+            }
+            return t;
+        } catch (SQLException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        return null;
+    }
 	
 	public Team getTeam(String teamID) {
 		return teams.get(teamID);
 	}
+
+    public ArrayList<String> getTeamIDs() {
+        return teamIDs;
+    }
 }
