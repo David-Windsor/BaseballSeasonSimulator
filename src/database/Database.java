@@ -21,7 +21,7 @@ public class Database {
 
 
     public Database() {
-		teams = new HashMap<String, Team>();
+        teams = new HashMap<>();
         teamIDs = new ArrayList<>();
 		
 		try {

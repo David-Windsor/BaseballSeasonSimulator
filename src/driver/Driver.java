@@ -17,7 +17,7 @@ public class Driver {
         for (String teamid : db.getTeamIDs()) {
             totalWins.put(teamid, 0);
         }
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 1; i++) {
             Season s = new Season(db);
             for (String teamid : db.getTeamIDs()) {
                 //System.out.println(teamid + ": " + s.getWins().get(db.getTeam(teamid)));
@@ -30,8 +30,9 @@ public class Driver {
         }
 
         for (String teamid : db.getTeamIDs()) {
-            System.out.println(teamid + ": " + totalWins.get(teamid) / 1000.0);
+            System.out.println(teamid + ": " + totalWins.get(teamid) + " Wins");
         }
+
 
     }
 

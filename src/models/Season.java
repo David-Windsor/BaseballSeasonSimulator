@@ -4,9 +4,12 @@ import database.Database;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
+@SuppressWarnings("unused")
 public class Season {
+    private List<Team> teams;
     private HashMap<Team, Integer> wins;
     private Database db;
 
@@ -24,206 +27,228 @@ public class Season {
         return wins;
     }
 
+    public Integer[] getWinNumbers() {
+        return wins.values().stream().map(Integer::new).toArray(Integer[]::new);
+    }
+
+    public Double[] getWinNumbersAsDoubles() {
+        return wins.values().stream().map(Double::new).toArray(Double[]::new);
+    }
+
     private void buildSeasonForTeam(Team t) {
         Random r = new Random();
         if (t.getLeague().equals("AL")) {
-            if (t.getDivision().equals("E")) {
-                ArrayList<Team> playableTeams = db
-                        .getTeams("SELECT team_id FROM Team WHERE league_id = 'AL' AND division_id = 'E'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 74; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+            switch (t.getDivision()) {
+                case "E": {
+                    ArrayList<Team> playableTeams = db
+                            .getTeams("SELECT team_id FROM Team WHERE league_id = 'AL' AND division_id = 'E'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 74; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 67; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 67; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
-                for (int i = 0; i < 21; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
+                    for (int i = 0; i < 21; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams.clear();
+                    playableTeams.clear();
 
-            } else if (t.getDivision().equals("C")) {
-                ArrayList<Team> playableTeams = db
-                        .getTeams("SELECT team_id FROM Team WHERE league_id = 'AL' AND division_id = 'C'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 74; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
-                    }
+                    break;
                 }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 67; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                case "C": {
+                    ArrayList<Team> playableTeams = db
+                            .getTeams("SELECT team_id FROM Team WHERE league_id = 'AL' AND division_id = 'C'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 74; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
-                for (int i = 0; i < 21; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 67; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams.clear();
-            } else {
-                ArrayList<Team> playableTeams = db
-                        .getTeams("SELECT team_id FROM Team WHERE league_id = 'AL' AND division_id = 'W'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 74; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
+                    for (int i = 0; i < 21; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
+                    playableTeams.clear();
+                    break;
                 }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 67; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                default: {
+                    ArrayList<Team> playableTeams = db
+                            .getTeams("SELECT team_id FROM Team WHERE league_id = 'AL' AND division_id = 'W'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 74; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
-                for (int i = 0; i < 21; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 67; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
+                    for (int i = 0; i < 21; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
+                    }
+                    playableTeams.clear();
+                    break;
                 }
-                playableTeams.clear();
             }
 
         } else {
-            if (t.getDivision().equals("E")) {
-                ArrayList<Team> playableTeams = db
-                        .getTeams("SELECT team_id FROM Team WHERE league_id = 'NL' AND division_id = 'E'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 74; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+            switch (t.getDivision()) {
+                case "E": {
+                    ArrayList<Team> playableTeams = db
+                            .getTeams("SELECT team_id FROM Team WHERE league_id = 'NL' AND division_id = 'E'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 74; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 67; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 67; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
-                for (int i = 0; i < 21; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
+                    for (int i = 0; i < 21; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams.clear();
+                    playableTeams.clear();
 
-            } else if (t.getDivision().equals("C")) {
-                ArrayList<Team> playableTeams = db
-                        .getTeams("SELECT team_id FROM Team WHERE league_id = 'NL' AND division_id = 'C'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 74; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
-                    }
+                    break;
                 }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 67; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                case "C": {
+                    ArrayList<Team> playableTeams = db
+                            .getTeams("SELECT team_id FROM Team WHERE league_id = 'NL' AND division_id = 'C'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 74; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
-                for (int i = 0; i < 21; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 67; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams.clear();
-            } else {
-                ArrayList<Team> playableTeams = db
-                        .getTeams("SELECT team_id FROM Team WHERE league_id = 'NL' AND division_id = 'W'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 74; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
+                    for (int i = 0; i < 21; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
+                    playableTeams.clear();
+                    break;
                 }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
-                playableTeams.remove(t);
-                for (int i = 0; i < 67; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                default: {
+                    ArrayList<Team> playableTeams = db
+                            .getTeams("SELECT team_id FROM Team WHERE league_id = 'NL' AND division_id = 'W'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 74; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
-                }
-                playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
-                for (int i = 0; i < 21; i++) {
-                    Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
-                    if (g.getResult().winner == t) {
-                        int temp = wins.get(t);
-                        wins.remove(t);
-                        wins.put(t, temp + 1);
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'NL'");
+                    playableTeams.remove(t);
+                    for (int i = 0; i < 67; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
                     }
+                    playableTeams = db.getTeams("SELECT team_id FROM Team WHERE league_id = 'AL'");
+                    for (int i = 0; i < 21; i++) {
+                        Game g = new Game(t, playableTeams.get(r.nextInt(playableTeams.size())));
+                        if (g.getResult().winner == t) {
+                            int temp = wins.get(t);
+                            wins.remove(t);
+                            wins.put(t, temp + 1);
+                        }
+                    }
+                    playableTeams.clear();
+                    break;
                 }
-                playableTeams.clear();
             }
         }
     }
