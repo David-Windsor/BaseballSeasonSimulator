@@ -19,7 +19,7 @@ public class Driver {
             totalWins.put(teamid, 0);
 
         }
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             Season s = new Season(db);
             for (String teamid : db.getTeamIDs()) {
                 //System.out.println(teamid + ": " + s.getWins().get(db.getTeam(teamid)));
@@ -29,7 +29,7 @@ public class Driver {
                 totalWins.put(teamid, temp);
             }
             System.out.println(i);
-            WinHistogram winHistogram = new WinHistogram("Wins", s);
+            WinHistogram winHistogram = new WinHistogram("Wins", s, 8);
             winHistogram.pack();
             winHistogram.setVisible(true);
         }

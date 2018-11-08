@@ -14,17 +14,20 @@ import org.jfree.ui.ApplicationFrame;
 import java.awt.*;
 import java.text.NumberFormat;
 
+@SuppressWarnings("unused")
 public class WinHistogram extends ApplicationFrame {
     private HistogramDataset dataset;
     private Season season;
-    private JFreeChart chart;
+    private int binSize;
 
-    public WinHistogram(String title, Season season) {
+
+    public WinHistogram(String title, Season season, int binSize) {
         super(title);
         dataset = new HistogramDataset();
         this.season = season;
+        this.binSize = binSize;
         configDataset();
-        chart = createChart();
+        JFreeChart chart = createChart();
         ChartPanel panel = new ChartPanel(chart);
         panel.setPreferredSize(new Dimension(960, 540));
         panel.setMouseWheelEnabled(false);
@@ -37,6 +40,7 @@ public class WinHistogram extends ApplicationFrame {
                 dataset, PlotOrientation.VERTICAL, true, false, false);
         XYPlot xyPlot = c.getXYPlot();
         xyPlot.setForegroundAlpha(0.75f);
+        // edit rangeAxis to get different values for the range
         NumberAxis rangeAxis = (NumberAxis) xyPlot.getRangeAxis();
         rangeAxis.setNumberFormatOverride(NumberFormat.getPercentInstance());
         return c;
@@ -49,7 +53,7 @@ public class WinHistogram extends ApplicationFrame {
             data[i] = tempData[i];
         }
         dataset.setType(HistogramType.RELATIVE_FREQUENCY);
-        dataset.addSeries("Wins", data, 7);
+        dataset.addSeries("Percent of teams", data, binSize);
     }
 
     public Season getSeason() {
