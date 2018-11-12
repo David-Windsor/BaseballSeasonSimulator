@@ -86,6 +86,11 @@ public class Team {
     }
 
     @Override
+    public int hashCode() {
+        return (league + division + teamId).hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
         return obj.getClass() == Team.class && ((Team) obj).getTeamId().equals(teamId);
     }

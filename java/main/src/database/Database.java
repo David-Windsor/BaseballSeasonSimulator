@@ -36,7 +36,7 @@ public class Database {
         ArrayList<Team> teams = new ArrayList<>();
         if (year >= 2015) {
             try {
-                String select = "SELECT * FROM TEAM WHERE YEAR = ?";
+                String select = "SELECT * FROM TEAM WHERE year = ?";
                 Connection c = getNewConnection();
                 //make the prepared statement and execute
                 PreparedStatement statement = c.prepareStatement(select);
