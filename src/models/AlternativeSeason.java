@@ -87,6 +87,7 @@ public class AlternativeSeason {
         String[] americanLeague = {"E", "C", "W"};
         String[] nationalLeague = {"W", "E", "C"};
         shiftLeagueMatchup(americanLeague, year);
+        // Create the 16 division matches
         for (int i = 0; i < 3; ++i) {
             ArrayList<Team> americanTeams = teamsForSeason.getTeamsByLeagueAndDivision("AL", americanLeague[i]);
             ArrayList<Team> nationalTeams = teamsForSeason.getTeamsByLeagueAndDivision("NL", nationalLeague[i]);
@@ -97,6 +98,8 @@ public class AlternativeSeason {
                 seriesForSeason.add(new Series(new Game(american, nationalTeams.get(4)), 4));
             }
         }
+        // now we need each team to play 4 other games against various teams in the other league
+        
     }
 
     /**
