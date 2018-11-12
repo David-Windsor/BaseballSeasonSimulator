@@ -80,30 +80,38 @@ public class AlternativeSeason {
 
     /**
      * @param seriesForSeason the ArrayList<Series> to insert the new series into
-     *                        Interleague games are based on two divisions from different leagues playing each other
-     *                        So in 2013, AL-W vs NL-C, AL-E vs NL-W and AL-C vs NL-E that rotate yearly
+     * Inter-league games are based on two divisions from different leagues playing each other
+     * So in 2013, AL-W vs NL-C, AL-E vs NL-W and AL-C vs NL-E that rotate yearly
      */
     private void makeInterLeagueSeries(ArrayList<Series> seriesForSeason) {
         String[] americanLeague = {"E", "C", "W"};
         String[] nationalLeague = {"W", "E", "C"};
-        shiftLeagueMatchup(americanLeague, nationalLeague, year);
+        shiftLeagueMatchup(americanLeague, year);
+        for (int i = 0; i < 3; ++i) {
+            ArrayList<Team> americanTeams = teamsForSeason.getTeamsByLeagueAndDivision("AL", americanLeague[i]);
+            ArrayList<Team> nationalTeams = teamsForSeason.getTeamsByLeagueAndDivision("NL", nationalLeague[i]);
+            for (Team american : americanTeams) {
+                for (int j = 0; j < nationalTeams.size() - 1; ++j) {
+                    seriesForSeason.add(new Series(new Game(american, nationalTeams.get(j)), 3));
+                }
+                seriesForSeason.add(new Series(new Game(american, nationalTeams.get(4)), 4));
+            }
+        }
     }
 
     /**
      * @param americanLeague Array of AL Divisions, handled in the method
-     * @param nationalLeague Array of NL Divisions, " " " " " " " " " " "
      * @param year           Year of the season used to determine how many shifts are required. Year must be >= 2013 for this
      *                       scheduling
      */
-    private void shiftLeagueMatchup(String[] americanLeague, String[] nationalLeague, Integer year) {
+    private void shiftLeagueMatchup(String[] americanLeague, Integer year) {
         // doing a left cyclical shift of the AL divisions is enough to get the proper matches,
         int amountOfCycles = (year - 2013) % 3;
         for (int i = 0; i < amountOfCycles; ++i) {
             String temp = americanLeague[0];
-            for (int index = 0; index < americanLeague.length; ++index) {
-
-            }
+            americanLeague[0] = americanLeague[1];
+            americanLeague[1] = americanLeague[2];
+            americanLeague[2] = temp;
         }
-
     }
 }
