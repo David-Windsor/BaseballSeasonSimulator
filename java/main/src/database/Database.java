@@ -5,15 +5,13 @@ import models.Team;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.List;
 
 
 /**
  * This is where we will store the database during run-time
  * I Don't quite know how we are gonna hold this yet.
- *
  */
-public class Database {
+class Database {
 
     @NotNull
     private static Connection getNewConnection() {
@@ -32,11 +30,12 @@ public class Database {
      * Opens a new connection and produces a list of all teams that played that year
      */
     @NotNull
-    static List<Team> getTeamsForYear(@NotNull Integer year) {
+    static ArrayList<Team> getTeamsForYear(@NotNull Integer year) {
         ArrayList<Team> teams = new ArrayList<>();
         if (year >= 2015) {
             try {
-                String select = "SELECT * FROM TEAM WHERE year = ?";
+                String select = "SELECT * FROM TeamBattingYear WHERE year = ?" +
+                        " ";
                 Connection c = getNewConnection();
                 //make the prepared statement and execute
                 PreparedStatement statement = c.prepareStatement(select);
