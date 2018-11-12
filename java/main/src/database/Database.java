@@ -34,8 +34,9 @@ class Database {
         ArrayList<Team> teams = new ArrayList<>();
         if (year >= 2015) {
             try {
-                String select = "SELECT * FROM TeamBattingYear WHERE year = ?" +
-                        " ";
+                String select = "SELECT * FROM TeamBattingYear INNER JOIN Team on TeamBattingYear.team_id = Team.team_id" +
+                        " WHERE TeamBattingYear.year = ?" ;
+
                 Connection c = getNewConnection();
                 //make the prepared statement and execute
                 PreparedStatement statement = c.prepareStatement(select);
@@ -43,7 +44,7 @@ class Database {
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
                     Team team = new Team(result.getString("team_id"), result.getString("name"),
-                            result.getString("league"), result.getString("division"));
+                            result.getString("league_id"), result.getString("division_id"));
                     teams.add(team);
                 }
             } catch (NullPointerException | SQLException e) {

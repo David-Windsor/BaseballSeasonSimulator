@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * teamValue is what we will use at first to determine wins and losses
  * this will be deprecated later
  */
+@SuppressWarnings("unused")
 public class Team {
     private ArrayList<Player> roster;
 
@@ -19,33 +20,21 @@ public class Team {
     private String league;
     private String division;
 
-    public Team(String id, String name, String l, String d) {
+    public Team(String id, String name, String leagueId, String divisionId) {
         roster = new ArrayList<>();
         teamValue = 0;
         teamId = id;
         teamName = name;
-        league = l;
-        division = d;
-    }
-
-    public void setRoster(ArrayList<Player> roster) {
-        this.roster = roster;
+        league = leagueId;
+        division = divisionId;
     }
 
     public String getTeamId() {
         return teamId;
     }
 
-    public void setTeamId(String teamId) {
-        this.teamId = teamId;
-    }
-
-    public String getTeamName() {
+    String getTeamName() {
         return teamName;
-    }
-
-    public void setTeamName(String teamName) {
-        this.teamName = teamName;
     }
 
     public String getLeague() {
@@ -64,16 +53,9 @@ public class Team {
         this.division = division;
     }
 
-    public void setTeamValue(double val) {
-        teamValue = val;
-    }
 
-    public double getTeamValue() {
+    double getTeamValue() {
         return teamValue;
-    }
-
-    public void addPlayer(Player p) {
-        roster.add(p);
     }
 
     public ArrayList<Player> getRoster() {
@@ -93,5 +75,14 @@ public class Team {
     @Override
     public boolean equals(Object obj) {
         return obj.getClass() == Team.class && ((Team) obj).getTeamId().equals(teamId);
+    }
+
+    /**
+     * @author David Windsor
+     * Builder pattern implementation for the Team class. As time goes on this class will become much more complicated
+     * and require several paramaters. Using this we can avoid excessively long contructors
+     */
+    public static class TeamBuilder {
+
     }
 }

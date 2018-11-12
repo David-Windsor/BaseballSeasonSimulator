@@ -26,12 +26,8 @@ public class TeamRequestHandler {
         }
     }
 
-    public ArrayList<Team> getTeamsByDivisionAndYear() {
-        return new ArrayList<>();
-    }
-
     private void fetchTeamsForYear(Integer year) {
-        ArrayList<Team> teams = (ArrayList<Team>) Database.getTeamsForYear(year);
+        ArrayList<Team> teams = Database.getTeamsForYear(year);
         teamListMap.put(year, teams);
     }
 
