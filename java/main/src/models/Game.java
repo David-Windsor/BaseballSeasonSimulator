@@ -1,6 +1,7 @@
 package models;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -13,10 +14,12 @@ public class Game {
 
     private Team home;
     private Team away;
+	private ArrayList<Inning> innings;
 
-	Game(Team H, Team A) {
-		home = H;
-		away = A;
+	Game(Team homeTeam, Team awayTeam) {
+		home = homeTeam;
+		away = awayTeam;
+		innings = new ArrayList<>(9);
 	}
 
 	GameResult play() {
