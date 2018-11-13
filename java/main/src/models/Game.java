@@ -1,10 +1,11 @@
 package models;
 
+import java.time.ZonedDateTime;
 import java.util.Random;
 
 /**
- * This class houses all the information about a particular game
- * More information will be stored here soon
+ * @author David Windsor
+ * @author Dan Jackson
  *
  */
 
@@ -13,36 +14,31 @@ public class Game {
     private Team home;
     private Team away;
 
-	public Game(Team H, Team A) {
+	Game(Team H, Team A) {
 		home = H;
 		away = A;
 	}
 
-	public GameResult play() {
-		Random r = new Random();
-		double n = r.nextDouble()*(home.getTeamValue()+away.getTeamValue());
-		if(n < home.getTeamValue()) {
-			return new GameResult(home);
-		}else if( n >= home.getTeamValue()) {
-			return new GameResult(away);
-		}
-		return null;
+	GameResult play() {
+		Random rng = new Random(ZonedDateTime.now().toEpochSecond());
+		int winner = rng.nextInt(home.getBattingAverage() + away.getBattingAverage());
+		return new GameResult(winner < home.getBattingAverage() ? home : away);
 	}
 
-	public Team getHome() {
+	Team getHome() {
 		return home;
 	}
 
-	public Team getAway() {
+	Team getAway() {
 		return away;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		return obj.getClass() == Game.class && ((Game) obj).getHome().equals(home) && ((Game) obj).getAway().equals(away);
+		return obj.getClass() == Game.class && sameTeams((Game) obj);
 	}
 
-	public boolean sameTeams(Game g) {
+	boolean sameTeams(Game g) {
 		return (home.equals(g.away) || home.equals(g.home)) && (away.equals(g.away) || away.equals(g.home));
 	}
 }

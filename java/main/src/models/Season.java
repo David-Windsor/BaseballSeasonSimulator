@@ -1,38 +1,51 @@
 package models;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
+/**
+ * @author David Windsor
+ * Created from the orignial Season class by Dan Jackson
+ * Class to represent an MLB season. Since the way a season is built changes periodically this will build and represent
+ * possible seasons from the 2013 - 2017 MLB seasons.
+ */
 public class Season {
     private HashMap<Team, Integer> wins;
+    private HashMap<Team, Integer> gamesAppeared;
     private TeamList teamsForSeason;
     private Integer year;
     private ArrayList<Series> series;
 
     public Season(Integer year) {
         wins = new HashMap<>();
+        gamesAppeared = new HashMap<>();
         teamsForSeason = new TeamList(year);
         this.year = year;
-        series = buildSeason(year);
+        series = buildSeason();
     }
 
     public HashMap<Team, Integer> getWins() {
         return wins;
     }
 
-    public Integer[] getWinNumbersAsInts() {
-        return wins.values().stream().map(Integer::new).toArray(Integer[]::new);
-    }
-
+    /**
+     * @return Array of doubles of the amount of wins in the season. Used by the WinHistogram Class
+     */
     public Double[] getWinNumbersAsDoubles() {
         return wins.values().stream().map(Double::new).toArray(Double[]::new);
     }
 
+    /**
+     * Plays out the season and stores all of its records into the wins HashMap. WILL OVERWRITE THE PREVIOUS RESULTS OF
+     * playSeason()
+     */
     public void playSeason() {
         ArrayList<GameResult> results;
+        for (Team team : teamsForSeason.getTeams())
+            gamesAppeared.put(team, 0);
         for (Series s : series) {
+            gamesAppeared.put(s.getGame().getHome(), gamesAppeared.get(s.getGame().getHome()) + s.getNumberOfPlays());
+            gamesAppeared.put(s.getGame().getAway(), gamesAppeared.get(s.getGame().getAway()) + s.getNumberOfPlays());
             results = s.playSeries();
             for (GameResult result : results) {
                 Team winner = result.getWinner();
@@ -47,7 +60,10 @@ public class Season {
 
     }
 
-    private ArrayList<Series> buildSeason(Integer year) {
+    /**
+     * @return ArrayList\<Series> for the Season to play out.
+     */
+    private ArrayList<Series> buildSeason() {
         ArrayList<Series> seriesForSeason = new ArrayList<>();
         // Build the series for same division and league
         //Get all the intra division games built and added first since they have the highest amount that needs played
@@ -68,6 +84,12 @@ public class Season {
         return seriesForSeason;
     }
 
+    /**
+     *
+     * @param league League that the matches will be made for
+     * @param division Division the matches will be made for
+     * @param seriesList ArrayList<Series> that the series for the matches will be held in
+     */
     private void makeIntraDivisionSeries(String league, String division, ArrayList<Series> seriesList) {
         ArrayList<Team> leagueAndDivision = teamsForSeason.getTeamsByLeagueAndDivision(league, division);
         // Now each team has four series with each other team, 19 games
@@ -76,6 +98,11 @@ public class Season {
                 seriesList.add(new Series(new Game(leagueAndDivision.get(i), leagueAndDivision.get(j)), 19));
     }
 
+    /**
+     *
+     * @param league League that the Intraleague games will be made for
+     * @param seriesList ArrayList\<Series> of the Intraleague matches
+     */
     private void makeIntraLeagueSeries(String league, ArrayList<Series> seriesList) {
         ArrayList<Team> leagueTeams = teamsForSeason.getTeamsByLeague(league);
         for (int i = 0; i < leagueTeams.size(); ++i) {
@@ -102,48 +129,46 @@ public class Season {
      *                        Inter-league games are based on two divisions from different leagues playing each other
      *                        So in 2013, AL-W vs NL-C, AL-E vs NL-W and AL-C vs NL-E that rotate yearly
      */
+    //TODO TRIM THIS METHOD INTO A REASONABLE NUMBER OF LINES
+    //TODO SOME SEASONS RESULT IN THE CORRECT TOTAL NUMBER OF GAMES, BUT SOME TEAMS PLAY TOO MANY GAMES, FIX THAT
     private void makeInterLeagueSeries(ArrayList<Series> seriesForSeason) {
         String[] americanLeague = {"E", "C", "W"};
         String[] nationalLeague = {"W", "E", "C"};
         shiftLeagueMatchup(americanLeague, year);
+        HashMap<Game, Boolean> isGameMade = new HashMap<>();
         // Create the 16 inter-league division matches for each team
         for (int i = 0; i < 3; ++i) {
             ArrayList<Team> americanTeams = teamsForSeason.getTeamsByLeagueAndDivision("AL", americanLeague[i]);
             ArrayList<Team> nationalTeams = teamsForSeason.getTeamsByLeagueAndDivision("NL", nationalLeague[i]);
             for (Team american : americanTeams) {
                 for (int j = 0; j < nationalTeams.size() - 1; ++j) {
-                    seriesForSeason.add(new Series(new Game(american, nationalTeams.get(j)), 3));
+                    Game game = new Game(american, nationalTeams.get(j));
+                    seriesForSeason.add(new Series(game, 3));
+                    isGameMade.put(game, true);
                 }
-                seriesForSeason.add(new Series(new Game(american, nationalTeams.get(4)), 4));
+                Game game = new Game(american, nationalTeams.get(4));
+                seriesForSeason.add(new Series(game, 4));
+                isGameMade.put(game, true);
             }
         }
+        ArrayList<Team> americanTeams = teamsForSeason.getTeamsByLeague("AL");
+        ArrayList<Team> nationalTeams = teamsForSeason.getTeamsByLeague("NL");
         HashMap<Team, Integer> appearanceMap = new HashMap<>();
-        // Now we need those teams to have 4 games overall against teams not in that divisional match up
-        for (int i = 0; i < americanLeague.length; ++i) {
-            // Take each AL division and figure out their other inter-league matches
-            ArrayList<Team> american = teamsForSeason.getTeamsByLeagueAndDivision("AL", americanLeague[i]);
-            ArrayList<Team> national = teamsForSeason.getTeamsByLeague("NL");
-            national.removeAll(teamsForSeason.getTeamsByLeagueAndDivision("NL", nationalLeague[i]));
-            for (Team team : american) {
-                Random rng = new Random(ZonedDateTime.now().toEpochSecond());
-                for (int m = 0; m < 4; ++m) {
-                    Team nationalTeam = national.get(rng.nextInt(national.size()));
-                    //If the national team appears in the map we need to check if it's had its 4 games made already
-                    if (appearanceMap.containsKey(nationalTeam)) {
-                        //if it does then we need to find a team that isn't
-                        while (!(appearanceMap.get(nationalTeam) < 4))
-                            nationalTeam = national.get(rng.nextInt(national.size()));
-
+        for (Team team : nationalTeams)
+            appearanceMap.put(team, 0);
+        for (Team americanTeam : americanTeams) {
+            int gamesAdded = 0;
+            for (Team nationalTeam : nationalTeams) {
+                if (gamesAdded == 4)
+                    break;
+                Game game = new Game(americanTeam, nationalTeam);
+                if (!isGameMade.containsKey(game))
+                    if (appearanceMap.get(nationalTeam) < 4) {
                         appearanceMap.put(nationalTeam, appearanceMap.get(nationalTeam) + 1);
-                        appearanceMap.put(team, i + 1);
-                        seriesForSeason.add(new Series(new Game(team, nationalTeam), 1));
-
-                    } else {
-                        appearanceMap.put(nationalTeam, 1);
-                        appearanceMap.put(team, i + 1);
-                        seriesForSeason.add(new Series(new Game(team, nationalTeam), 1));
+                        isGameMade.put(game, true);
+                        seriesForSeason.add(new Series(game, 1));
+                        ++gamesAdded;
                     }
-                }
             }
         }
     }

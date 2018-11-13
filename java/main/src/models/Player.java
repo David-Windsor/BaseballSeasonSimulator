@@ -2,14 +2,14 @@ package models;
 
 
 /**
- * This class will house all the information about a particular player
- * Sooner or later, a map might be better for storing all this information
- * 
+ * Class representing a Player in the MLB. Currently unused but will be needed when Innings are introduced
+ * @author Dan Jackson
+ * @author David Windsor
  */
 public class Player {
-	public String name;
-	public String playerID;
-	public Team team;
+	private String name;
+	private String playerID;
+	private Team team;
 	
 	public Player(String n, String id, Team t) {
 		name = n;

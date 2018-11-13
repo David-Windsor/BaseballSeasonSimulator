@@ -6,6 +6,11 @@ import models.Team;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Handler that all handles all requests to the database regarding teams
+ *
+ * @author David Windsor
+ */
 public class TeamRequestHandler {
     private static HashMap<Integer, ArrayList<Team>> teamListMap = new HashMap<>();
 

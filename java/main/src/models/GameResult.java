@@ -1,20 +1,19 @@
 package models;
 
 /**
- * A simple class that holds the results of a game
- * This can be used to update the database or just to keep track of stats for the season
- *
+ * Simple holder for the winner of an unspecified game
+ * @author Dan Jackson
  */
 public class GameResult {
-    Team winner;
+	private Team winner;
 
 
     GameResult(Team w) {
 
 		winner = w;
 	}
-	
-	public Team getWinner() {
+
+	Team getWinner() {
 		return winner;
 	}
 

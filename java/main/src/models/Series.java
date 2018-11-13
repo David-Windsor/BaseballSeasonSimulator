@@ -2,24 +2,30 @@ package models;
 
 import java.util.ArrayList;
 
-public class Series {
+/**
+ * @author David Windsor
+ * Class to hold several games played between two teams.
+ * To avoid memory issues with storing the same game multiple times, this class will know how many times a certain
+ * match-up should be played and will handle returning and managing all results of the games played
+ */
+class Series {
     private Game game;
     private int numberOfPlays;
 
-    public Series(Game game, int numberOfPlays) {
+    Series(Game game, int numberOfPlays) {
         this.game = game;
         this.numberOfPlays = numberOfPlays;
     }
 
-    public Game getGame() {
+    Game getGame() {
         return game;
     }
 
-    public int getNumberOfPlays() {
+    int getNumberOfPlays() {
         return numberOfPlays;
     }
 
-    public ArrayList<GameResult> playSeries() {
+    ArrayList<GameResult> playSeries() {
         ArrayList<GameResult> results = new ArrayList<>();
         for (int i = 0; i < numberOfPlays; ++i) {
             results.add(game.play());
@@ -31,7 +37,7 @@ public class Series {
      * @param g game to compare to
      * @return True if the same two teams are playing the series as in g
      */
-    public boolean doesSeriesContainGame(Game g) {
+    boolean doesSeriesContainGame(Game g) {
         return g.sameTeams(game);
     }
 }

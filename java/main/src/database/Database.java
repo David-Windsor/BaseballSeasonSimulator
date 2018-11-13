@@ -8,11 +8,15 @@ import java.util.ArrayList;
 
 
 /**
- * This is where we will store the database during run-time
- * I Don't quite know how we are gonna hold this yet.
+ * Class responsible for interacting directly with the database. Available to classes withing the database package only
+ * @version 1
+ * @author David Windsor
+ * @author Dan Jackson
  */
 class Database {
-
+    /**
+     * @return a new connection to the database
+     */
     @NotNull
     private static Connection getNewConnection() {
         try {
@@ -43,14 +47,20 @@ class Database {
                 statement.setInt(1, year);
                 ResultSet result = statement.executeQuery();
                 while (result.next()) {
+                    // we only need batting average to the thousandths place
+                    int battingAverage = (int) (result.getInt("hits") * 1000.0 / result.getInt("at_bat"));
+                    //TODO THIS WILL PUT THE BATTING AVERAGE AT THE PRECISION WE WANT, BUT WE SHOULD ADAPT IT TO USE INT
                     Team team = new Team(result.getString("team_id"), result.getString("name"),
-                            result.getString("league_id"), result.getString("division_id"));
+                            result.getString("league_id"), result.getString("division_id"),
+                            battingAverage);
                     teams.add(team);
                 }
+                c.close();
             } catch (NullPointerException | SQLException e) {
                 e.printStackTrace();
             }
         }
+
         return teams;
     }
 

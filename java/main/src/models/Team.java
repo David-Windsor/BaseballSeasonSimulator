@@ -3,26 +3,22 @@ package models;
 import java.util.ArrayList;
 
 /**
- * Class that houses all the information about a team
- * Right now this just includes players but could be
- * expanded to other information
- * teamValue is what we will use at first to determine wins and losses
- * this will be deprecated later
+ * Representation of a Team in the MLB. Will be expanded on as much as needed for the granularity of the simulation
  */
 @SuppressWarnings("unused")
 public class Team {
     private ArrayList<Player> roster;
 
-    private double teamValue;
+    private int battingAverage;
 
     private String teamId;
     private String teamName;
     private String league;
     private String division;
 
-    public Team(String id, String name, String leagueId, String divisionId) {
+    public Team(String id, String name, String leagueId, String divisionId, int battingAverage) {
         roster = new ArrayList<>();
-        teamValue = 0;
+        this.battingAverage = battingAverage;
         teamId = id;
         teamName = name;
         league = leagueId;
@@ -54,8 +50,8 @@ public class Team {
     }
 
 
-    double getTeamValue() {
-        return teamValue;
+    int getBattingAverage() {
+        return battingAverage;
     }
 
     public ArrayList<Player> getRoster() {
@@ -74,15 +70,8 @@ public class Team {
 
     @Override
     public boolean equals(Object obj) {
-        return obj.getClass() == Team.class && ((Team) obj).getTeamId().equals(teamId);
+        return obj.getClass() == Team.class && ((Team) obj).getTeamId().equals(teamId)
+                && battingAverage == ((Team) obj).getBattingAverage();
     }
 
-    /**
-     * @author David Windsor
-     * Builder pattern implementation for the Team class. As time goes on this class will become much more complicated
-     * and require several paramaters. Using this we can avoid excessively long contructors
-     */
-    public static class TeamBuilder {
-
-    }
 }

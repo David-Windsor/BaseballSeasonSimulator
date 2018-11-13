@@ -28,7 +28,8 @@ public class Driver {
         season.playSeason();
 
         WinHistogram winHistogram = new WinHistogram("Wins for season", season, 12);
-
+            winHistogram.pack();
+            winHistogram.setVisible(true);
     }
 
 }

@@ -14,13 +14,22 @@ import org.jfree.ui.ApplicationFrame;
 import java.awt.*;
 import java.text.NumberFormat;
 
+/**
+ * @author David Windsor
+ * Class made to support the Histogram provided by JFreeChart
+ * @see <a href= "http://www.jfree.org/jfreechart/"><</a>
+ */
 @SuppressWarnings("unused")
 public class WinHistogram extends ApplicationFrame {
     private HistogramDataset dataset;
     private Season season;
     private int binSize;
 
-
+    /**
+     * @param title   Title of the Window
+     * @param season  Season the Histogram will represent
+     * @param binSize size of each bin in the histogram
+     */
     public WinHistogram(String title, Season season, int binSize) {
         super(title);
         dataset = new HistogramDataset();
