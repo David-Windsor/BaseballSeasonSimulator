@@ -1,5 +1,5 @@
 # BaseballSeasonSimulator
-Senior Capstone for [David Windsor](gtihub.com/David-Windsor) and Dan Jackson of Westminster College, PA. Capstone advisor is [Dr. John P. Bonomo](http://www.westminster.edu/staff/bonomojp/). 
+Senior Capstone for [David Windsor](gtihub.com/David-Windsor) and [Dan Jackson](https://github.com/DanJackson29) of Westminster College, PA. Capstone advisor is [Dr. John P. Bonomo](http://www.westminster.edu/staff/bonomojp/). 
 
 # Purpose
 The purpose of this Project is twofold:
