@@ -14,7 +14,7 @@ public class Driver {
 
         // Build Database and Populate Players based off of past three seasons
         // Build teams based on the players stats and their most recent teams if played
-        // in 2017-2018 season.
+        // in 2017-2018 season. foo
         TeamRequestHandler teamHandler = new TeamRequestHandler();
         ArrayList<Team> teams = teamHandler.getTeamsForYear(2017);
 
