@@ -9,9 +9,7 @@ import java.util.Random;
  * @author Dan Jackson
  *
  */
-
 public class Game {
-
     private Team home;
     private Team away;
 	private ArrayList<Inning> innings;

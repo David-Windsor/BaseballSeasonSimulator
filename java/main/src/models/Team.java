@@ -1,21 +1,30 @@
 package models;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Representation of a Team in the MLB. Will be expanded on as much as needed for the granularity of the simulation
  */
 @SuppressWarnings("unused")
+@Entity
+@Table(name = "TEAMS")
 public class Team {
-    private ArrayList<Player> roster;
-
-    private int battingAverage;
-
+    @Id
+    @Column(name = "id")
     private String teamId;
+    @ManyToMany
+    private List<Player> roster;
+    @Column(name = "batting_average")
+    private int battingAverage;
+    @Column(name = "team_name")
     private String teamName;
     private String league;
     private String division;
 
+    public Team() {
+    }
     public Team(String id, String name, String leagueId, String divisionId, int battingAverage) {
         roster = new ArrayList<>();
         this.battingAverage = battingAverage;
@@ -54,10 +63,13 @@ public class Team {
         return battingAverage;
     }
 
-    public ArrayList<Player> getRoster() {
+    public List<Player> getRoster() {
         return roster;
     }
 
+    public void addPlayer(Player p) {
+        roster.add(p);
+    }
     @Override
     public String toString() {
         return teamId;
