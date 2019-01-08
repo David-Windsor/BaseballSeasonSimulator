@@ -22,9 +22,11 @@ public class Team {
     private String teamName;
     private String league;
     private String division;
+    private int year;
 
     public Team() {
     }
+
     public Team(String id, String name, String leagueId, String divisionId, int battingAverage) {
         roster = new ArrayList<>();
         this.battingAverage = battingAverage;
@@ -32,6 +34,14 @@ public class Team {
         teamName = name;
         league = leagueId;
         division = divisionId;
+    }
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
     }
 
     public String getTeamId() {
@@ -67,6 +77,7 @@ public class Team {
         return roster;
     }
 
+    //TODO remove this once testing and the initializing process starts
     public void addPlayer(Player p) {
         roster.add(p);
     }

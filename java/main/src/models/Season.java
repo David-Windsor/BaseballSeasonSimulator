@@ -16,10 +16,10 @@ public class Season {
     private Integer year;
     private ArrayList<Series> series;
 
-    public Season(Integer year) {
+    public Season(Integer year, ArrayList<Team> teams) {
         wins = new HashMap<>();
         gamesAppeared = new HashMap<>();
-        teamsForSeason = new TeamList(year);
+        teamsForSeason = new TeamList(teams);
         this.year = year;
         series = buildSeason();
     }
@@ -129,7 +129,6 @@ public class Season {
      *                        Inter-league games are based on two divisions from different leagues playing each other
      *                        So in 2013, AL-W vs NL-C, AL-E vs NL-W and AL-C vs NL-E that rotate yearly
      */
-    //TODO TRIM THIS METHOD INTO A REASONABLE NUMBER OF LINES
     //TODO SOME SEASONS RESULT IN THE CORRECT TOTAL NUMBER OF GAMES, BUT SOME TEAMS PLAY TOO MANY GAMES, FIX THAT
     private void makeInterLeagueSeries(ArrayList<Series> seriesForSeason) {
         String[] americanLeague = {"E", "C", "W"};

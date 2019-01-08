@@ -24,7 +24,7 @@ public class TeamList {
         teams = new TeamRequestHandler().getTeamsForYear(year);
     }
 
-    ArrayList<Team> getTeams() {
+    public ArrayList<Team> getTeams() {
         return teams;
     }
 
@@ -33,7 +33,7 @@ public class TeamList {
      * @return ArrayList\<Team\> of all the teams belonging to the league out of all the teams in the TeamList
      */
     @NotNull
-    ArrayList<Team> getTeamsByLeague(String league) {
+    public ArrayList<Team> getTeamsByLeague(String league) {
         ArrayList<Team> teamsInLeague = new ArrayList<>();
         for (Team team : teams) {
             if (team.getLeague().equals(league))
