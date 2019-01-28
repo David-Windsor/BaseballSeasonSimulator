@@ -44,4 +44,9 @@ public class Game {
 	boolean sameTeams(Game g) {
 		return (home.equals(g.away) || home.equals(g.home)) && (away.equals(g.away) || away.equals(g.home));
 	}
+
+	@Override
+	public String toString() {
+		return away.toString() + " @ " + home.toString();
+	}
 }

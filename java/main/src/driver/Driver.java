@@ -14,9 +14,11 @@ public class Driver {
 
         // Build Database and Populate Players based off of past three seasons
         // Build teams based on the players stats and their most recent teams if played
-        // in 2017-2018 season. foo
+        // in 2017-2018 season.
+
         TeamRequestHandler teamHandler = new TeamRequestHandler();
         ArrayList<Team> teams = teamHandler.getTeamsForYear(2017);
+        Season season = new Season(teams);
 
         HashMap<String, Integer> totalWins = new HashMap<>();
         for (Team team : teams) {
@@ -24,7 +26,6 @@ public class Driver {
 
         }
 
-        Season season = new Season(2017);
         season.playSeason();
 
         WinHistogram winHistogram = new WinHistogram("Wins for season", season, 12);

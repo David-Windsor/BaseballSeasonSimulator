@@ -27,7 +27,7 @@ public class WinHistogram extends ApplicationFrame {
 
     /**
      * @param title   Title of the Window
-     * @param season  Season the Histogram will represent
+     * @param season  SeasonOld the Histogram will represent
      * @param binSize size of each bin in the histogram
      */
     public WinHistogram(String title, Season season, int binSize) {

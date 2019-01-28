@@ -7,12 +7,12 @@
 //import java.util.Random;
 //
 //@SuppressWarnings("unused")
-//public class Season {
+//public class SeasonOld {
 //    private ArrayList<Team> teams;
 //    private TeamRequestHandler requestHandler;
 //    private HashMap<Team, Integer> wins;
 //
-//    public Season(Integer year) {
+//    public SeasonOld(Integer year) {
 //        wins = new HashMap<>();
 //        requestHandler = new TeamRequestHandler();
 //        teams = requestHandler.getTeamsForYear(year)

@@ -64,4 +64,25 @@ class Database {
         return teams;
     }
 
+    /**
+     * @return ArrayList of strings which represent games. Ex "PIT @ PHI"
+     * Executes SQL command to retrieve list of games from DB
+     */
+    static ArrayList<String> getGames() {
+        ArrayList<String> gamesListAsString = new ArrayList<String>();
+        try {
+            String select = "SELECT * FROM SeasonSchedule";
+            Connection c = getNewConnection();
+            PreparedStatement statement = c.prepareStatement(select);
+            ResultSet result = statement.executeQuery();
+            while (result.next()) {
+                gamesListAsString.add(result.getString("Games"));
+            }
+
+        } catch (NullPointerException | SQLException e) {
+            e.printStackTrace();
+            ;
+        }
+        return gamesListAsString;
+    }
 }
