@@ -23,8 +23,14 @@ public class Team {
     private String league;
     private String division;
     private int year;
-
+    @OneToOne(cascade = CascadeType.ALL)
+    private TeamBattingBlackboard blackboard;
     public Team() {
+        teamId = teamName = league = division = "";
+        year = 2018;
+        roster = new ArrayList<>();
+        blackboard = null;
+        battingAverage = 0;
     }
 
     public Team(String id, String name, String leagueId, String divisionId, int battingAverage) {
@@ -34,6 +40,17 @@ public class Team {
         teamName = name;
         league = leagueId;
         division = divisionId;
+    }
+
+
+    public Team(String id, String name, String leagueId, String divisionId, int battingAverage, TeamBattingBlackboard bboard) {
+        roster = new ArrayList<>();
+        this.battingAverage = battingAverage;
+        teamId = id;
+        teamName = name;
+        league = leagueId;
+        division = divisionId;
+        blackboard = bboard;
     }
 
     public int getYear() {
@@ -46,6 +63,11 @@ public class Team {
 
     public String getTeamId() {
         return teamId;
+    }
+
+    //TODO REMOVE AFTER FIX
+    public void setTeamId(String teamId) {
+        this.teamId = teamId;
     }
 
     String getTeamName() {
@@ -68,6 +90,13 @@ public class Team {
         this.division = division;
     }
 
+    public TeamBattingBlackboard getBlackboard() {
+        return blackboard;
+    }
+
+    public void setBlackboard(TeamBattingBlackboard blackboard) {
+        this.blackboard = blackboard;
+    }
 
     int getBattingAverage() {
         return battingAverage;

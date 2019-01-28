@@ -21,5 +21,6 @@
 
         <mapping class="models.Team"/>
         <mapping class="models.Player"/>
+        <mapping class="models.TeamBattingBlackboard"/>
     </session-factory>
 </hibernate-configuration>

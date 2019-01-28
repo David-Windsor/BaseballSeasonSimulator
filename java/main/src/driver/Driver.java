@@ -9,42 +9,40 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.List;
 
 public class Driver {
 
 	public static void main(String[] args) {
         //Keep this here, session factories are expensive to make so we want to able to keep just one at all times
-        SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        SessionFactory sf = new Configuration().configure().buildSessionFactory();
+        Session session = sf.openSession();
+        CriteriaBuilder builder = session.getCriteriaBuilder();
 
-        //TODO THIS IS JUST FOR TESTING RIGHT NOW, ONCE IT IS MADE THE OPTION WONT BE NEEDED MUCH
-        if (args.length > 0 && args[0].equals("--create")) {
-            if (!createDatabase(sessionFactory))
-                System.exit(10);
-        }
-        //Ask what year we are simulating
-        Scanner kbd = new Scanner(System.in);
-        System.out.println("What year would you like to simulate? Hint, use 2017");
-        int simulatedYear = kbd.nextInt();
+        // UPDATED: Create CriteriaQuery
+        CriteriaQuery<Team> criteria = builder.createQuery(Team.class);
 
-        Session session = sessionFactory.openSession();
-        CriteriaQuery<Team> query = session.getCriteriaBuilder().createQuery(Team.class);
-        Root<Team> root = query.from(Team.class);
-        query.select(root);
-        ArrayList<Team> teams = new ArrayList<>(session.createQuery(query).list());
-        HashMap<String, Integer> totalWins = new HashMap<>();
-        for (Team team : teams) {
-            totalWins.put(team.getTeamId(), 0);
+        // UPDATED: Specify criteria root
+        criteria.from(Team.class);
+        // UPDATED: Execute query
+        List<Team> ts = session.createQuery(criteria).getResultList();
+        System.out.println("Teams gotten");
+        ArrayList<Team> teams = new ArrayList<>(ts);
 
-        }
 
-        Season season = new Season(2017, teams);
+//        //TODO THIS IS JUST FOR TESTING RIGHT NOW, ONCE IT IS MADE THE OPTION WONT BE NEEDED MUCH
+//        if (args.length > 0 && args[0].equals("--create")) {
+//            if (!createDatabase(sf))
+//                System.exit(10);
+//        }
+
+        Season season = new Season(2018, teams);
+        System.out.println("Season made");
         season.playSeason();
-
+        System.out.println("Season played");
         WinHistogram winHistogram = new WinHistogram("Wins for season", season, 12);
             winHistogram.pack();
             winHistogram.setVisible(true);
