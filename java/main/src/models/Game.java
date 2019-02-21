@@ -10,7 +10,7 @@ public class Game {
     private Team away;
 
 
-	Game(Team homeTeam, Team awayTeam) {
+	public Game(Team homeTeam, Team awayTeam) {
 		home = homeTeam;
 		away = awayTeam;
 	}
