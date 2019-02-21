@@ -1,31 +1,33 @@
 package models;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Random;
-
 /**
  * @author David Windsor
  * @author Dan Jackson
  *
  */
-
 public class Game {
-
     private Team home;
     private Team away;
-	private ArrayList<Inning> innings;
 
-	Game(Team homeTeam, Team awayTeam) {
+
+	public Game(Team homeTeam, Team awayTeam) {
 		home = homeTeam;
 		away = awayTeam;
-		innings = new ArrayList<>(9);
 	}
 
 	GameResult play() {
-		Random rng = new Random(ZonedDateTime.now().toEpochSecond());
-		int winner = rng.nextInt(home.getBattingAverage() + away.getBattingAverage());
-		return new GameResult(winner < home.getBattingAverage() ? home : away);
+		int homeScore = 0;
+		int awayScore = 0;
+		for (int i = 0; i < 9; ++i) {
+			homeScore += home.getBlackboard().roll();
+			awayScore += away.getBlackboard().roll();
+		}
+		//overtime innings
+		while (awayScore == homeScore) {
+			homeScore += home.getBlackboard().roll();
+			awayScore += away.getBlackboard().roll();
+		}
+		return homeScore > awayScore ? new GameResult(home) : new GameResult(away);
 	}
 
 	Team getHome() {

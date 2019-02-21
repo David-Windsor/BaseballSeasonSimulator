@@ -21,7 +21,7 @@ class Database {
     private static Connection getNewConnection() {
         try {
             Class.forName("org.sqlite.JDBC");
-            return DriverManager.getConnection("jdbc:sqlite:./external_resources/BaseballDatabase.db");
+            return DriverManager.getConnection("jdbc:sqlite:./external_resources/BaseballDatabaseOld.db");
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
             return getNewConnection();
