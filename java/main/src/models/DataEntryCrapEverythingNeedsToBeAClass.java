@@ -59,7 +59,7 @@ public class DataEntryCrapEverythingNeedsToBeAClass {
             for (int i = 3; i < split.length; ++i) {
                 numbers.add(Integer.parseInt(split[i]));
             }
-            team.setBlackboard(new TeamBattingBlackboard(numbers));
+            team.setBlackboard(new ResultGenerator(numbers));
             System.out.println("Adding " + team.getTeamId());
             session.save(team);
         }

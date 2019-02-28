@@ -24,7 +24,7 @@ public class Team {
     private String division;
     private int year;
     @OneToOne(cascade = CascadeType.ALL)
-    private TeamBattingBlackboard blackboard;
+    private ResultGenerator blackboard;
     public Team() {
         teamId = teamName = league = division = "";
         year = 2018;
@@ -43,7 +43,7 @@ public class Team {
     }
 
 
-    public Team(String id, String name, String leagueId, String divisionId, int battingAverage, TeamBattingBlackboard bboard) {
+    public Team(String id, String name, String leagueId, String divisionId, int battingAverage, ResultGenerator bboard) {
         roster = new ArrayList<>();
         this.battingAverage = battingAverage;
         teamId = id;
@@ -90,11 +90,11 @@ public class Team {
         this.division = division;
     }
 
-    public TeamBattingBlackboard getBlackboard() {
+    public ResultGenerator getBlackboard() {
         return blackboard;
     }
 
-    public void setBlackboard(TeamBattingBlackboard blackboard) {
+    public void setBlackboard(ResultGenerator blackboard) {
         this.blackboard = blackboard;
     }
 
