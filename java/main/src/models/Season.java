@@ -25,6 +25,7 @@ public class Season {
     }
 
     public Season(Integer year, ArrayList<Team> teams, ArrayList<Game> games) {
+        this.year = year;
         wins = new HashMap<>();
         gamesAppeared = new HashMap<>();
         teamsForSeason = new TeamList(teams);

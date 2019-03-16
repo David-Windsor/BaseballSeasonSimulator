@@ -15,7 +15,7 @@ import java.util.Random;
  */
 @Entity
 @Table(name = "RESULT_GENERATORS")
-class ResultGenerator {
+public class ResultGenerator {
     @Id
     @GeneratedValue
     private int id;
@@ -30,7 +30,7 @@ class ResultGenerator {
         results = new ArrayList<>();
     }
 
-    ResultGenerator(@NotNull ArrayList<Integer> numbers) {
+    public ResultGenerator(@NotNull ArrayList<Integer> numbers) {
         //define the ranges and use max as a reference for where we are at
         max = 0;
         results = new ArrayList<>(numbers.size());

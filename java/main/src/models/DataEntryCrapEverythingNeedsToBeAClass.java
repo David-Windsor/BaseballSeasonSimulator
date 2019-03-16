@@ -5,10 +5,13 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class DataEntryCrapEverythingNeedsToBeAClass {
     public static void main(String[] args) throws IOException {
@@ -16,27 +19,24 @@ public class DataEntryCrapEverythingNeedsToBeAClass {
         SessionFactory sf = new Configuration().configure().buildSessionFactory();
         Session session = sf.openSession();
         session.beginTransaction();
-//        CriteriaBuilder builder = session.getCriteriaBuilder();
-//
-//        // UPDATED: Create CriteriaQuery
-//        CriteriaQuery<Team> criteria = builder.createQuery(Team.class);
-//
-//        // UPDATED: Specify criteria root
-//        criteria.from(Team.class);
-//        // UPDATED: Execute query
-//        List<Team> teams = session.createQuery(criteria).getResultList();
-////        for (Team t : teams) {
-////            System.out.println(t.getTeamId() + " " + t.getLeague() + " " + t.getDivision());
-////        }
-//        HashMap<String, Team> teamHashMap = new HashMap<>();
-//        for(Team t: teams) {
-//            teamHashMap.put(t.getTeamId(), t);
-//        }
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        // UPDATED: Create CriteriaQuery
+        CriteriaQuery<Team> criteria = builder.createQuery(Team.class);
+
+        // UPDATED: Specify criteria root
+        criteria.from(Team.class);
+        // UPDATED: Execute query
+        List<Team> teams = session.createQuery(criteria).getResultList();
+        for (Team t : teams) {
+            System.out.println(t.getTeamId());
+        }
+
 
 
         BufferedReader reader = new BufferedReader(new FileReader("./external_resources/teamstuff.txt"));
         String currentLine;
-        
+
 //        while((currentLine = reader.readLine()) != null) {
 //            String[] strings = currentLine.split(",");
 //            for(int i = 0; i < strings.length; i += 3) {
@@ -46,7 +46,6 @@ public class DataEntryCrapEverythingNeedsToBeAClass {
 //            }
 //
 //        }
-//
 
 
         while ((currentLine = reader.readLine()) != null) {
