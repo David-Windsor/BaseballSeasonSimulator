@@ -1,30 +1,37 @@
 package models;
 
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Class representing a Player in the MLB. Currently unused but will be needed when Innings are introduced
+ *
  * @author Dan Jackson
  * @author David Windsor
  */
 @Entity
 @Table(name = "PLAYERS")
-public class Player {
-    private String name;
+public class Player implements Comparable<Player> {
     @Id
+    @GeneratedValue
+    private int id;
+    private String name;
+    private int atBats;
     private String playerID;
-    @OneToOne
-    private Team team;
-	
-	public Player(String n, String id, Team t) {
-		name = n;
-		playerID = id;
-		team = t;
-	}
+    @OneToOne(cascade = CascadeType.ALL)
+    private ResultGenerator resultGenerator;
+
+    public Player() {
+        name = "";
+        playerID = "";
+        atBats = 0;
+        resultGenerator = new ResultGenerator();
+    }
+
+    public Player(String n, String id) {
+        name = n;
+        playerID = id;
+    }
 
     public String getName() {
         return name;
@@ -32,6 +39,14 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getAtBats() {
+        return atBats;
+    }
+
+    public void setAtBats(int atBats) {
+        this.atBats = atBats;
     }
 
     public String getPlayerID() {
@@ -42,11 +57,26 @@ public class Player {
         this.playerID = playerID;
     }
 
-    public Team getTeam() {
-        return team;
+    public ResultGenerator getResultGenerator() {
+        return resultGenerator;
     }
 
-    public void setTeam(Team team) {
-        this.team = team;
+    public void setResultGenerator(ResultGenerator resultGenerator) {
+        this.resultGenerator = resultGenerator;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public int compareTo(Player o) {
+        if (atBats > o.atBats) return 1;
+        if (atBats < o.atBats) return -1;
+        return 0;
     }
 }

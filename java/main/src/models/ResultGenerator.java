@@ -14,39 +14,39 @@ import java.util.Random;
  * Rather than keeping it in the class and occupying it like crazy we can use this as a container and add methods as needed
  */
 @Entity
-@Table(name = "TEAM_BATTING")
-class TeamBattingBlackboard {
+@Table(name = "RESULT_GENERATORS")
+public class ResultGenerator {
     @Id
     @GeneratedValue
     private int id;
-    @Column(name = "runs_per_inning")
+    @Column(name = "ranges")
     @ElementCollection(targetClass = Integer.class)
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
-    private List<Integer> runsPerInning;
+    private List<Integer> results;
     private int max;
 
-    public TeamBattingBlackboard() {
+    public ResultGenerator() {
         max = 0;
-        runsPerInning = new ArrayList<>();
+        results = new ArrayList<>();
     }
 
-    TeamBattingBlackboard(@NotNull ArrayList<Integer> numbers) {
+    public ResultGenerator(@NotNull ArrayList<Integer> numbers) {
         //define the ranges and use max as a reference for where we are at
         max = 0;
-        runsPerInning = new ArrayList<>(numbers.size());
+        results = new ArrayList<>(numbers.size());
         for (int i = 0; i < numbers.size(); ++i) {
             int temp = max + numbers.get(i);
             max += +numbers.get(i);
-            runsPerInning.add(i, temp);
+            results.add(i, temp);
         }
     }
 
-    public List<Integer> getRunsPerInning() {
-        return runsPerInning;
+    public List<Integer> getResults() {
+        return results;
     }
 
-    public void setRunsPerInning(List<Integer> runsPerInning) {
-        this.runsPerInning = runsPerInning;
+    public void setResults(List<Integer> results) {
+        this.results = results;
     }
 
     public int getMax() {
@@ -68,8 +68,8 @@ class TeamBattingBlackboard {
     int roll() {
         Random rng = new Random();
         int roll = rng.nextInt(max + 1);
-        for (int i = 0; i < runsPerInning.size(); ++i) {
-            if (roll <= runsPerInning.get(i))
+        for (int i = 0; i < results.size(); ++i) {
+            if (roll <= results.get(i))
                 return i;
         }
         return 0;
